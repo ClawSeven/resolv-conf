@@ -3,6 +3,7 @@ use std::iter::{IntoIterator, Iterator};
 use std::slice::Iter;
 use {grammar, Network, ParseError, ScopedIp};
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
+use std::io::Write;
 
 const NAMESERVER_LIMIT:usize = 3;
 const SEARCH_LIMIT:usize = 6;
@@ -159,6 +160,101 @@ impl Config {
             lookup: Vec::new(),
             family: Vec::new(),
         }
+    }
+
+    /// extracting useful information for a new resolve.conf fle
+
+    pub fn write_to_file(&self, path: String) -> String {
+        let mut res = String::from("# resolve.conf file\n");
+        let mut file = std::fs::File::create(path).expect("create failed");
+
+        if ! self.nameservers.is_empty() {
+            for ip in &self.nameservers {
+                let temp_nameserver = format!("nameserver {}\n", &ip);
+                res.push_str(&temp_nameserver)
+            }
+        }
+
+        if ! self.get_domain().is_none() {
+            let temp_domain = format!("domain {:?}\n", &self.domain);
+            res.push_str(&temp_domain)
+        }
+
+        if ! self.get_search().is_none() {
+            res.push_str(&"search ");
+            for sear in  &self.search {
+                let temp_sear = format!("{:?} ", &sear);
+                res.push_str(&temp_sear)
+            }
+            res.push_str(&"\n");
+        }
+
+        if ! self.sortlist.is_empty() {
+            res.push_str(&"sortlist ");
+            for ip_sort in &self.sortlist {
+                let temp_ip_sort = format!("{} ", &ip_sort);
+                res.push_str(&temp_ip_sort)
+            }
+            res.push_str(&"\n");
+        }
+
+        res.push_str(&"options ");
+        if self.debug {
+            res.push_str(&"debug ");
+        }
+        if self.ndots != 1 {
+            let temp_ndots = format!("ndots:{} ", self.ndots);
+            res.push_str(&temp_ndots);
+        }
+        if self.timeout != 5 {
+            let temp_timeout = format!("timeout:{} ", self.timeout);
+            res.push_str(&temp_timeout);
+        }
+        if self.attempts != 2 {
+            let temp_attempts = format!("attempts:{} ", self.attempts);
+            res.push_str(&temp_attempts);
+        }
+        if self.rotate {
+            res.push_str(&"rotate ");
+        }
+        if self.no_check_names {
+            res.push_str(&"no_check_names ");
+        }
+        if self.inet6 {
+            res.push_str(&"inet6 ");
+        }
+        if self.ip6_bytestring {
+            res.push_str(&"ip6_bytestring ");
+        }
+        if self.ip6_dotint {
+            res.push_str(&"ip6_dotint ");
+        }
+        if self.edns0 {
+            res.push_str(&"edns0 ");
+        }
+        if self.single_request {
+            res.push_str(&"single_request ");
+        }
+        if self.single_request_reopen {
+            res.push_str(&"single_request_reopen ");
+        }
+        if self.no_tld_query {
+            res.push_str(&"no_tld_query ");
+        }
+        if self.use_vc {
+            res.push_str(&"use_vc ");
+        }
+        if self.no_reload {
+            res.push_str(&"no_reload ");
+        }
+        if self.trust_ad {
+            res.push_str(&"trust_ad ");
+        }
+        res.push_str(&"\n");
+
+        file.write_all(res.as_bytes()).expect("write failed");
+        println!("data written to file" );
+        return res
     }
 
     /// Parse a buffer and return the corresponding `Config` object.
