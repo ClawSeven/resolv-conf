@@ -162,7 +162,8 @@ impl Config {
         }
     }
 
-    /// extracting useful information for a new resolve.conf fle
+    /// extracting useful information for a new resolve.conf file
+    /// todo: lookup and family fragment
 
     pub fn write_to_file(&self, path: String) -> String {
         let mut res = String::from("# resolve.conf file\n");
@@ -202,18 +203,14 @@ impl Config {
         if self.debug {
             res.push_str(&"debug ");
         }
-        if self.ndots != 1 {
-            let temp_ndots = format!("ndots:{} ", self.ndots);
-            res.push_str(&temp_ndots);
-        }
-        if self.timeout != 5 {
-            let temp_timeout = format!("timeout:{} ", self.timeout);
-            res.push_str(&temp_timeout);
-        }
-        if self.attempts != 2 {
-            let temp_attempts = format!("attempts:{} ", self.attempts);
-            res.push_str(&temp_attempts);
-        }
+        
+        let temp_ndots = format!("ndots:{} ", self.ndots);
+        res.push_str(&temp_ndots);
+        let temp_timeout = format!("timeout:{} ", self.timeout);
+        res.push_str(&temp_timeout);
+        let temp_attempts = format!("attempts:{} ", self.attempts);
+        res.push_str(&temp_attempts);
+
         if self.rotate {
             res.push_str(&"rotate ");
         }
@@ -253,7 +250,6 @@ impl Config {
         res.push_str(&"\n");
 
         file.write_all(res.as_bytes()).expect("write failed");
-        println!("data written to file" );
         return res
     }
 
