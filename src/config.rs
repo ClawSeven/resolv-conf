@@ -1,8 +1,11 @@
-use std::fmt;
-use std::iter::{IntoIterator, Iterator};
-use std::slice::Iter;
+use core::fmt;
+use core::iter::{IntoIterator, Iterator};
+use core::slice::Iter;
 use {grammar, Network, ParseError, ScopedIp};
-use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
+use no_std_net::{IpAddr, Ipv4Addr, Ipv6Addr};
+use alloc::vec;
+use alloc::vec::Vec;
+use alloc::string::String;
 
 const NAMESERVER_LIMIT:usize = 3;
 const SEARCH_LIMIT:usize = 6;

@@ -14,7 +14,9 @@ version = "0.7.0"
 authors = ["paul@colomiets.name"]
 
 [dependencies]
-quick-error = "2.0.0"
+quick-error = { path = "../quick-error" }
+no-std-net = { path = "../no-std-net" }
+core-error =  {version = "0.0.1-rc4" , features = ["alloc"]}                                                        
 hostname = { version = "^0.3", optional = true }
 
 [features]

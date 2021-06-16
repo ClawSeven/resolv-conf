@@ -90,11 +90,15 @@
 
 #![warn(missing_debug_implementations)]
 #![warn(missing_docs)]
+#![no_std]
 
 #[macro_use]
 extern crate quick_error;
 #[cfg(feature = "system")]
 extern crate hostname;
+extern crate alloc;
+extern crate no_std_net;
+extern crate core_error;
 
 mod grammar;
 mod ip;

@@ -1,7 +1,9 @@
-use std::error::Error;
-use std::fmt;
-use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
-use std::str::FromStr;
+use core_error::Error;
+use core::fmt;
+use no_std_net::{IpAddr, Ipv4Addr, Ipv6Addr};
+use core::str::FromStr;
+use alloc::string::String;
+use alloc::string::ToString;
 
 /// A network, that is an IP address and a mask
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -126,8 +128,8 @@ impl fmt::Display for AddrParseError {
 impl Error for AddrParseError {
 }
 
-impl From<::std::net::AddrParseError> for AddrParseError {
-    fn from(_: ::std::net::AddrParseError) -> Self {
+impl From<::no_std_net::AddrParseError> for AddrParseError {
+    fn from(_: ::no_std_net::AddrParseError) -> Self {
         AddrParseError
     }
 }
