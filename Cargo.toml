@@ -14,7 +14,8 @@ version = "0.7.0"
 authors = ["paul@colomiets.name"]
 
 [dependencies]
-quick-error = "1.0.0"
+quick-error = {  git = "https://github.com/mesalock-linux/quick-error-sgx.git"  } 
+sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
 hostname = { version = "^0.3", optional = true }
 
 [features]
