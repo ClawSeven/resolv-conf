@@ -1,5 +1,6 @@
 use std::net::{Ipv4Addr, Ipv6Addr};
 use std::str::{Utf8Error, from_utf8};
+use std::string::ToString;
 
 use {AddrParseError, Config, Network, Lookup, Family};
 

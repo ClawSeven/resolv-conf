@@ -3,6 +3,8 @@ use std::iter::{IntoIterator, Iterator};
 use std::slice::Iter;
 use {grammar, Network, ParseError, ScopedIp};
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
+use std::vec::Vec;
+use std::string::String;
 
 const NAMESERVER_LIMIT:usize = 3;
 const SEARCH_LIMIT:usize = 6;

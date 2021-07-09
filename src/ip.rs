@@ -2,6 +2,7 @@ use std::error::Error;
 use std::fmt;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 use std::str::FromStr;
+use std::string::{String, ToString};
 
 /// A network, that is an IP address and a mask
 #[derive(Clone, Debug, PartialEq, Eq)]
